@@ -1,47 +1,269 @@
 <html>
 
-<head></head>
+<head>
+<link rel="stylesheet" href="./accordion.css">
+</head>
 
 <body>
     <h1>ドメインしりとり</h1>
-    <p>ルール</p>
-    <ol>
-        <li>
-            <p>ドメインの文字列でしりとる
-            </p>
-            <p>ドメインの例：www.google.com, yahoo.co.jp, wikipedia.org
-            </p>
-        </li>
-        <li>
-            <p>英字(a-z)・数字(0-9)・ハイフン(-)が使用可能
-            </p>
-        </li>
-        <li>
-            <p>ドメインが存在していなければアウト
-            </p>
-        </li>
-        <li>
-            <p>同じドメインを使ったらアウト
-            </p>
-            <p>ちなwww.google.comとgoogle.comは異なる
-            </p>
-        </li>
-        <li>
-            <p>3回アウトで終了
-            </p>
-        </li>
-        <li>
-            <p>ドメインの文字数・認知度などからポイントを算出
-            </p>
-        </li>
-    </ol>
 
-    <ol>
-        <li><input id="input"><button>確定</button></li>
-        <li><input id="input" placeholder="m"></li>
-    </ol>
+    <details id="accordion" class="accordion" open>
+        <summary class="rule-summary">
+          ルール
+          <span class="open-close-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="rule-container">
+          <div class="rule-inner">
+            <ol>
+                <li>
+                    <p>ドメインでしりとりする</p>
+                    <p>ドメインの例：www.google.com, yahoo.co.jp, wikipedia.org</p>
+                </li>
+                <li>
+                    <p>英字(a-z)・数字(0-9)・ハイフン(-)が使用可能</p>
+                </li>
+                <li>
+                    <p>ドメインが存在していなければアウト</p>
+                </li>
+                <li>
+                    <p>同じドメインを使ったらアウト</p>
+                    <p>（※www.google.comとgoogle.comは異なる）</p>
+                </li>
+                <li>
+                    <p>３回アウトで終了</p>
+                </li>
+                <!-- <li>
+                    <p>ドメインの文字数・認知度などからポイントを算出</p>
+                </li> -->
+            </ol>
+          </div>
+        </div>
+    </details>
 
 
+    <div class="player-container">
+        <p class="heart" id="heart">❤️❤️❤️</p>
+        <ol id="domain_list"><li>www.google.com</li></ol><!--  olタグを改行しないこと -->
+        <p id="warning_text" class="warning"></p>
+        <input id="input" class="input" value="m" onInput="checkValidDomain()"><button id="submit_btn" onclick="submit()" disabled="true">確定</button>
+    </div>
+    <footer class="footer">
+        <p class="fotter-text">Ver. 0.1 © 2024 <a href="https://omine.me">omine.me</a></p>
+    </footer>
+    <section id="resultModal" class="modalArea">
+        <div id="modalBg" class="modalBg"></div>
+        <div class="modalWrapper">
+          <div class="modalContents">
+            <p>ゲームオーバー</p>
+            <button onclick="playAgain()">もう一度</button>
+          </div>
+        </div>
+    </section>
 </body>
+<script src="./accordion.js"></script>
+<style>
+    body {
+        font-family: sans-serif;
+    }    
+    .heart {
+        font-size: 2rem;
+    }
+    .player-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .missed_domain {
+        color: grey;
+        text-decoration-line: line-through;
+    }
+    .warning {
+        color: rgb(175, 0, 0);
+        min-height: 1.5rem;
+        margin: 0;
+    }
+    .input{
+        padding: 0.7rem 1rem;
+        font-size: 1.5rem;
+    }
+    .modalArea {
+        display: none;
+        position: fixed;
+        z-index: 10; /*サイトによってここの数値は調整 */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .modalBg {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(30,30,30,0.9);
+    }
+    .modalWrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform:translate(-50%,-50%);
+        width: 70%;
+        max-width: 500px;
+        padding: 10px 30px;
+        background-color: #fff;
+    }
+    .footer{
+        width: 100%;
+        text-align: center;
+        background-color: gainsboro;
+        margin: 7rem 0 0 0;
+    }
+    .fotter-text{
+        padding: 0.5rem;
+        color: #444;
+    }
+</style>
+<script>
+function submit() {
+    input_val = document.getElementById("input");
+    input_val.value = input_val.value.toLowerCase();
+    if (input_val.value.slice(-1) === ".") {
+        input_val.value = input_val.value.slice(0, -1);
+    }
+    domain = input_val.value;
+    checkDomainExists(domain).then(result => {
+        if (result.exists) {
+          console.log("Domain exists.");
+          addToDomainList(domain, true);
+        } else {
+            console.log("Domain does not exist.");
+            addToDomainList(domain, false);
+            updateRemainingLives();
+        }
+    });
+    input_val.value = "";
+    input_val.focus();
+}
+function checkValidDomain(){
+    const domain = document.getElementById("input").value;
+    if(domain === ""){
+        document.getElementById("submit_btn").disabled = true;
+        document.getElementById("warning_text").textContent = "";
+        return;
+    }
 
+    // document.getElementById("domain_list")のliタグを全部取得して、doaminと比較
+    const domain_list = document.getElementById("domain_list").getElementsByTagName("li");
+    for(let i = 0; i < domain_list.length; i++){
+        if(domain_list[i].textContent === domain){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "同じドメインは使えません";
+            return;
+        }
+        if (i == domain_list.length - 1) {
+            if(domain_list[i].textContent.slice(-1) !== domain.slice(0, 1)){
+                document.getElementById("submit_btn").disabled = true;
+                document.getElementById("warning_text").textContent = `しりとりになっていません（${domain_list[i].textContent.slice(-1)}から始めます）`;
+                return;
+            }
+        }
+    }
+
+
+    // if(domain.match(/^(?!-)[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(\.)*(?!-)$/)){
+    if(domain.match(/^[a-zA-Z0-9.-]+$/)){
+        // 先頭や末尾にハイフンがあるか
+        if(domain[0] === "-"){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "先頭にハイフン(-)は使えません";
+            return;
+        }else if(domain.slice(-1) === "-"){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "末尾にハイフン(-)は使えません";
+            return;
+        }
+        // 先頭にドットがないか
+        if(domain[0] === "."){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "先頭にドット(.)は使えません";
+            return;
+        }
+        // 末尾以外に一つ以上のドットがあるか
+        if(!domain.slice(0, -1).includes(".")){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "途中にドット(.)がありません";
+            return;
+        }
+
+        document.getElementById("submit_btn").disabled = false;
+        document.getElementById("warning_text").textContent = "";
+    }else{
+        document.getElementById("submit_btn").disabled = true;
+        document.getElementById("warning_text").textContent = "ドメインの形式が違います(英数字とハイフン、ドットのみ)";
+    }
+}
+function addToDomainList(domain, exists) {
+    const domain_list = document.getElementById("domain_list");
+    const child = document.createElement(exists ? "li" : "p");
+    // pにはclassを追加
+    if(!exists){
+        child.classList.add("missed_domain");
+    }
+    child.textContent = domain;
+    domain_list.appendChild(child);
+}
+function updateRemainingLives() {
+    const heart = document.getElementById("heart");
+    // ❤️の数を取得
+    const currentLives = heart.textContent.match(/❤️/g).length;
+    if (currentLives === 1) {
+        document.getElementById("resultModal").style.display = "block";
+        return;
+    }else{
+        // 最後❤️を減らして💔を追加
+        heart.textContent = heart.textContent.replace(/❤️(?!.*❤️)/, "💔");
+    }
+}
+async function checkDomainExists(domain) {
+    const ipv4Url = `https://dns.google.com/resolve?name=${domain}&type=A`;
+    const ipv6Url = `https://dns.google.com/resolve?name=${domain}&type=AAAA`;
+  
+    try {
+      // まずIPv4リクエストを送信
+      const ipv4Response = await fetch(ipv4Url);
+      const ipv4Data = await ipv4Response.json();
+  
+      // IPv4が成功し、Statusが0ならドメインは存在する
+      if (ipv4Data.Status === 0 && ipv4Data.Answer) {
+        return { exists: true };
+      }
+    } catch (error) {
+      // IPv4でエラーが発生した場合、IPv6リクエストにフォールバック
+      console.warn("IPv4 request failed, attempting IPv6...", error);
+    }
+  
+    try {
+      // IPv6リクエストを送信
+      const ipv6Response = await fetch(ipv6Url);
+      const ipv6Data = await ipv6Response.json();
+  
+      // IPv6が成功し、Statusが0ならドメインは存在する
+      if (ipv6Data.Status === 0 && ipv6Data.Answer) {
+        return { exists: true };
+      }
+    } catch (error) {
+      console.warn("IPv6 request also failed.", error);
+    }
+  
+    // どちらも失敗またはドメインが存在しない場合
+    return { exists: false };
+}
+function playAgain(){
+    document.getElementById("resultModal").style.display = "none";
+    document.getElementById("domain_list").innerHTML = "<li>www.google.com</li>";
+    document.getElementById("heart").textContent = "❤️❤️❤️";
+    document.getElementById("input").value = "m";
+    document.getElementById("submit_btn").disabled = true;
+    document.getElementById("warning_text").textContent = "";
+    document.getElementById("input").focus();
+}
+</script>
 </html>

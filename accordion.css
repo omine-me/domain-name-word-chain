@@ -1,0 +1,64 @@
+:where(*, ::before, ::after) {
+    box-sizing: border-box;
+    margin: 0;
+    }
+.accordion {
+max-inline-size: 40rem;
+margin: 0 auto;
+}
+
+.rule-summary {
+display: grid;
+grid-template-columns: 1fr auto;
+gap: 1em;
+align-items: center;
+padding-block: 16px;
+padding-inline: 24px;
+color: #fff;
+cursor: pointer;
+background-color: #6a6a6a;
+border-radius: 1rem 1rem 0 0;
+
+&::-webkit-details-marker {
+    display: none;
+}
+}
+
+.open-close-icon {
+position: relative;
+display: inline-block;
+inline-size: 1em;
+aspect-ratio: 1;
+
+&::before,
+&::after {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 1px;
+    margin: auto;
+    content: "";
+    background-color: currentcolor;
+}
+
+&::after {
+    transition: opacity 0.3s;
+    rotate: 90deg;
+}
+
+&:where(.accordion[open] *)::after {
+    opacity: 0;
+}
+}
+
+.rule-container {
+display: grid;
+transition: grid-template-rows 0.5s;
+border: 1px solid #6a6a6a;
+grid-template-rows: 1fr;
+border-radius: 0 0 1rem 1rem;
+}
+
+.rule-inner {
+overflow: hidden;
+}

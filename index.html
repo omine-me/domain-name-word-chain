@@ -1,9 +1,14 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="ja">
 <head>
+    <title>ドメインしりとり</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://m-shiritori.omine.me" />
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg">
+    <meta name="format-detection" content="telephone=no" />
 <link rel="stylesheet" href="./accordion.css">
 </head>
-
 <body>
     <div class="main_container">
         <h1><a href="">ドメインしりとり</a></h1>
@@ -26,7 +31,7 @@
                         <span>ドメインが存在していなければアウト</span><span class="tooltip-container" tabindex="0">?<div class="tooltip-text">Public DNSで確認してDNS response codeが0のドメインを存在するものとする</div></span>
                     </li>
                     <li class="rule-text">
-                        <p>同じドメインを使ったらアウト</p>
+                        <p>同じドメインは使えない</p>
                         <p>（※www.google.comとgoogle.comは異なるのでOK）</p>
                     </li>
                     <li class="rule-text">
@@ -47,19 +52,24 @@
             <ol class="domain_list" id="domain_list"></ol><!--  olタグを改行しないこと -->
             <p id="warning_text" class="warning"></p>
             <div class="input_container">
-            <input id="input" class="input" onInput="checkValidDomain()"><button id="submit_btn" class="submit_btn" onclick="submit()" disabled="true">→</button>
+            <input id="input" class="input" onInput="checkValidDomain()">
+            <button id="submit_btn" class="submit_btn" onclick="submit()" disabled="true">
+                <img class="submit_btn_img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f50e.svg">
+            </button>
             </div>
         </div>
     </div>
     <footer class="footer">
-        <p class="fotter-text">Ver. 0.3 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text">Ver. 0.4 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
         <div class="modalWrapper">
           <div class="modalContents">
             <p class="resultTitle">ゲームオーバー</p>
+            <p class="resultPoint" id="resultPoint"></p>
             <div id="resultDomainListContainer"></div>
+            <a class="shareBtn" id="shareBtn" href="" target="_blank">Xで結果を共有</a>
             <button class="replayBtn" onclick="playAgain()">もう一度</button>
           </div>
         </div>
@@ -109,10 +119,21 @@
         text-decoration-line: line-through;
     }
     .domain_list {
-        text-align: left;
-    }
-    .domain_li {
         font-size: 1.7rem;
+    }
+    .domain_li_div {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+    .point_li {
+        font-style: italic;
+        color: #6b6b6b;
+        margin-left: 3rem;
+        font-size: 1.2rem;
+    }
+    .point_li::after {
+        content: " pt";
     }
     .warning {
         color: rgb(175, 0, 0);
@@ -127,8 +148,14 @@
         border: blue solid;
         border-width: 1px 0 1px 1px;
     }
+    .input_container{
+        display: flex;
+    }
+    .submit_btn_img{
+        width: 2.3rem;
+    }
     .submit_btn{
-        padding: 0 1.5rem;
+        padding: 0 1rem;
         font-size: 1.5rem;
         height: 4rem;
         border-radius: 0 1rem 1rem 0;
@@ -170,6 +197,9 @@
     }
     .resultTitle {
         font-size: 2rem;
+    }
+    .resultPoint {
+        font-size: 3.5rem;
     }
     .replayBtn {
         font-size: 1.3rem;
@@ -274,16 +304,20 @@ function checkValidDomain(){
 
     // document.getElementById("domain_list")のliタグを全部取得して、doaminと比較
     const domain_list = document.getElementById("domain_list").getElementsByTagName("li");
+    // make domain lowercase and remove last "."" if exists
+    const sanitaized_domain = domain.toLowerCase().replace(/\.$/, "");
     for(let i = 0; i < domain_list.length; i++){
-        if(domain_list[i].textContent === domain){
+        // get first span of domain_list[i]
+        list_domain_text = domain_list[i].getElementsByTagName("div")[0].getElementsByTagName("span")[0].textContent;
+        if(list_domain_text === sanitaized_domain){
             document.getElementById("submit_btn").disabled = true;
             document.getElementById("warning_text").textContent = "同じドメインは使えません";
             return;
         }
         if (i == domain_list.length - 1) {
-            if(domain_list[i].textContent.slice(-1) !== domain.slice(0, 1)){
+            if(list_domain_text.slice(-1) !== domain.slice(0, 1)){
                 document.getElementById("submit_btn").disabled = true;
-                document.getElementById("warning_text").textContent = `しりとりになっていません（${domain_list[i].textContent.slice(-1)}から始めます）`;
+                document.getElementById("warning_text").textContent = `しりとりになっていません（${list_domain_text.slice(-1)}から始めます）`;
                 return;
             }
         }
@@ -307,6 +341,12 @@ function checkValidDomain(){
             document.getElementById("warning_text").textContent = "先頭にドット(.)は使えません";
             return;
         }
+        //連続するドットがないか
+        if(domain.match(/\.{2,}/)){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "ドット(.)は連続では使えません";
+            return;
+        }
         // 末尾以外に一つ以上のドットがあるか
         if(!domain.slice(0, -1).includes(".")){
             document.getElementById("submit_btn").disabled = true;
@@ -322,15 +362,20 @@ function checkValidDomain(){
     }
 }
 function addToDomainList(domain, exists) {
-    const domain_list = document.getElementById("domain_list");
-    const child = document.createElement(exists ? "li" : "p");
-    // pにはclassを追加
-    if(!exists){
+    if (exists){
+        // <li><div class="domain_li></div><li>
+        var child = document.createElement("li");
+        child.innerHTML = `<div class="domain_li_div"><span>${domain}</span><span class="point_li">${calcPoint()}</span></div>`;
+    }else{
+        // <div class="missed_domain"></div>
+        var child = document.createElement("div");
         child.classList.add("missed_domain");
+        child.innerHTML = `<span>${domain}</span>`;
     }
-    child.classList.add("domain_li");
-    child.textContent = domain;
-    domain_list.appendChild(child);
+    document.getElementById("domain_list").appendChild(child);
+}
+function calcPoint(){
+    return "100";
 }
 function updateRemainingLives() {
     const hearts = document.getElementById("hearts");
@@ -339,6 +384,9 @@ function updateRemainingLives() {
     if (brokenHearts === 2) {
         document.getElementById("resultModal").style.display = "block";
         document.getElementById("resultDomainListContainer").innerHTML = document.getElementById("domain_list").outerHTML;
+        const pt = getPointSum();
+        document.getElementById("resultPoint").innerHTML = pt + " pt!";
+        document.getElementById("shareBtn").href = `https://twitter.com/intent/tweet?text=私のドメインしりとりのスコアは${pt}ptでした！&url=${location.href}`;
         return;
     } else {
         if (brokenHearts === 1) {
@@ -347,6 +395,16 @@ function updateRemainingLives() {
         // 最後❤️を減らして💔を追加
         hearts.innerHTML = heart_inter_html.repeat(3 - (brokenHearts+1)) + broken_heart_inter_html.repeat(brokenHearts+1);
     }
+}
+function getPointSum(){
+    let sum = 0;
+    const domain_list = document.getElementById("domain_list").getElementsByTagName("li");
+    for(let i = 0; i < domain_list.length; i++){
+        // get first span of domain_list[i]
+        point = domain_list[i].getElementsByTagName("div")[0].getElementsByTagName("span")[1].textContent;
+        sum += parseInt(point);
+    }
+    return sum;
 }
 async function checkDomainExists(domain) {
     const ipv4Url = `https://dns.google.com/resolve?name=${domain}&type=A`;
@@ -384,7 +442,7 @@ async function checkDomainExists(domain) {
 }
 function playAgain(){
     document.getElementById("resultModal").style.display = "none";
-    document.getElementById("domain_list").innerHTML = '<li class="domain_li">www.google.com</li>';
+    document.getElementById("domain_list").innerHTML = '<li><div class="domain_li_div"><span>www.google.com</span><span class="point_li">0</span></div></li>';
     document.getElementById("hearts").innerHTML = heart_inter_html.repeat(3);
     document.getElementById("hearts").classList.remove("wiggle");
     document.getElementById("submit_btn").disabled = true;

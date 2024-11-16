@@ -6,7 +6,7 @@
 
 <body>
     <div class="main_container">
-        <h1>ドメインしりとり</h1>
+        <h1><a href="">ドメインしりとり</a></h1>
         <details id="accordion" class="accordion" open>
             <summary class="rule-summary">
             ルール
@@ -43,23 +43,24 @@
             </div>
         </details>
         <div class="player-container">
-            <p class="heart" id="heart">❤️❤️❤️</p>
-            <ol id="domain_list"><li class="domain_li">www.google.com</li></ol><!--  olタグを改行しないこと -->
+            <div class="hearts" id="hearts"></div>
+            <ol class="domain_list" id="domain_list"></ol><!--  olタグを改行しないこと -->
             <p id="warning_text" class="warning"></p>
             <div class="input_container">
-            <input id="input" class="input" value="m" onInput="checkValidDomain()"><button id="submit_btn" class="submit_btn" onclick="submit()" disabled="true">→</button>
+            <input id="input" class="input" onInput="checkValidDomain()"><button id="submit_btn" class="submit_btn" onclick="submit()" disabled="true">→</button>
             </div>
         </div>
     </div>
     <footer class="footer">
-        <p class="fotter-text">Ver. 0.2 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text">Ver. 0.3 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
         <div class="modalWrapper">
           <div class="modalContents">
-            <p>ゲームオーバー</p>
-            <button onclick="playAgain()">もう一度</button>
+            <p class="resultTitle">ゲームオーバー</p>
+            <div id="resultDomainListContainer"></div>
+            <button class="replayBtn" onclick="playAgain()">もう一度</button>
           </div>
         </div>
     </section>
@@ -76,12 +77,16 @@
         margin: 0;
         padding: 2rem 0;
     }
+    a {
+        text-decoration: none;
+        color: black;
+    }
     .main_container{
         background-color: #fcfcfc;
-        padding: 0 0 7rem 0;
+        padding: 0 10% 7rem 10%;
     }
     .heart {
-        font-size: 3.3rem;
+        width: 4rem;
     }
     .wiggle {
         animation: wiggle .2s infinite;
@@ -96,11 +101,15 @@
     .player-container {
         display: flex;
         flex-direction: column;
+        margin: 1rem 0;
         align-items: center;
     }
     .missed_domain {
         color: grey;
         text-decoration-line: line-through;
+    }
+    .domain_list {
+        text-align: left;
     }
     .domain_li {
         font-size: 1.7rem;
@@ -142,7 +151,7 @@
     .modalBg {
         width: 100%;
         height: 100%;
-        background-color: rgba(30,30,30,0.9);
+        background-color: rgba(30,30,30,0.7);
     }
     .modalWrapper {
         position: absolute;
@@ -151,13 +160,29 @@
         transform:translate(-50%,-50%);
         width: 70%;
         max-width: 500px;
-        padding: 10px 30px;
+        padding: 2rem;
         background-color: #fff;
+    }
+    .modalContents {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .resultTitle {
+        font-size: 2rem;
+    }
+    .replayBtn {
+        font-size: 1.3rem;
+        border-radius: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        border: 1px solid;
+        margin: 1rem 1rem 0;
     }
     .footer{
         width: 100%;
         text-align: center;
         background-color: gainsboro;
+        height: min();
     }
     .fotter-text{
         padding: 0.5rem;
@@ -217,6 +242,8 @@
   }
 </style>
 <script>
+const heart_inter_html = '<img class="heart" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2665.svg">';
+const broken_heart_inter_html = '<img class="heart" data-isbroken="true" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg">';
 function submit() {
     input_val = document.getElementById("input");
     input_val.value = input_val.value.toLowerCase();
@@ -228,10 +255,8 @@ function submit() {
     domain = input_val.value;
     checkDomainExists(domain).then(result => {
         if (result.exists) {
-          console.log("Domain exists.");
           addToDomainList(domain, true);
         } else {
-            console.log("Domain does not exist.");
             addToDomainList(domain, false);
             updateRemainingLives();
         }
@@ -263,7 +288,6 @@ function checkValidDomain(){
             }
         }
     }
-
 
     // if(domain.match(/^(?!-)[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(\.)*(?!-)$/)){
     if(domain.match(/^[a-zA-Z0-9.-]+$/)){
@@ -309,18 +333,19 @@ function addToDomainList(domain, exists) {
     domain_list.appendChild(child);
 }
 function updateRemainingLives() {
-    const heart = document.getElementById("heart");
-    // ❤️の数を取得
-    const currentLives = heart.textContent.match(/❤️/g).length;
-    if (currentLives === 1) {
+    const hearts = document.getElementById("hearts");
+    // count the number of broken hearts
+    const brokenHearts = hearts.querySelectorAll("img[data-isbroken]").length;
+    if (brokenHearts === 2) {
         document.getElementById("resultModal").style.display = "block";
+        document.getElementById("resultDomainListContainer").innerHTML = document.getElementById("domain_list").outerHTML;
         return;
-    }else{
-        if (currentLives === 2) {
-            heart.classList.add("wiggle");
+    } else {
+        if (brokenHearts === 1) {
+            hearts.classList.add("wiggle");
         }
         // 最後❤️を減らして💔を追加
-        heart.textContent = heart.textContent.replace(/❤️(?!.*❤️)/, "💔");
+        hearts.innerHTML = heart_inter_html.repeat(3 - (brokenHearts+1)) + broken_heart_inter_html.repeat(brokenHearts+1);
     }
 }
 async function checkDomainExists(domain) {
@@ -360,12 +385,13 @@ async function checkDomainExists(domain) {
 function playAgain(){
     document.getElementById("resultModal").style.display = "none";
     document.getElementById("domain_list").innerHTML = '<li class="domain_li">www.google.com</li>';
-    document.getElementById("heart").textContent = "❤️❤️❤️";
-    document.getElementById("input").value = "m";
+    document.getElementById("hearts").innerHTML = heart_inter_html.repeat(3);
+    document.getElementById("hearts").classList.remove("wiggle");
     document.getElementById("submit_btn").disabled = true;
     document.getElementById("warning_text").textContent = "";
+    document.getElementById("input").value = "m";
     document.getElementById("input").focus();
-    document.getElementById("heart").classList.remove("wiggle");
 }
+playAgain();
 </script>
 </html>

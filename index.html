@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="main_container">
-        <h1><a href="">ドメインしりとり</a></h1>
+        <h1><a href="">ドメイン<wbr />しりとり</a><p class="title_en">Domain name word chain</p></h1>
         <details id="accordion" class="accordion" open>
             <summary class="rule-summary">
             ルール
@@ -40,9 +40,9 @@
                     <li class="rule-text">
                         <p>世界一有名なドメインwww.google.comからスタート</p>
                     </li>
-                    <!-- <li class="rule-text">
-                        <p>ドメインの文字数・認知度などからポイントを算出</p>
-                    </li> -->
+                    <li class="rule-text">
+                        <p>ドメインの文字数などからポイントを算出</p>
+                    </li>
                 </ul>
             </div>
             </div>
@@ -60,7 +60,7 @@
         </div>
     </div>
     <footer class="footer">
-        <p class="fotter-text">Ver. 1.0 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text">Ver. 1.0.1 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
@@ -77,222 +77,228 @@
 </body>
 <script src="./accordion.js"></script>
 <style>
-    body {
-        font-family: sans-serif;
-        background-color: gainsboro;
-        margin: 0;
-    }
-    h1 {
-        text-align: center;
-        margin: 0;
-        padding: 2rem 0;
-    }
-    a {
-        text-decoration: none;
-        color: black;
-    }
-    .main_container{
-        background-color: #fcfcfc;
-        padding: 0 10% 7rem 10%;
-    }
-    .heart {
-        width: 4rem;
-    }
-    .wiggle {
-        animation: wiggle .2s infinite;
-    }
-    @keyframes wiggle {
-        0% {transform: translate(0px, 0px) rotateZ(0deg)}
-        25% {transform: translate(2px, 2px) rotateZ(1deg)}
-        50% {transform: translate(0px, 2px) rotateZ(0deg)}
-        75% {transform: translate(2px, 0px) rotateZ(-1deg)}
-        100% {transform: translate(0px, 0px) rotateZ(0deg)}
-    }
-    .player-container {
-        display: flex;
-        flex-direction: column;
-        margin: 1rem 0;
-        align-items: center;
-    }
-    .domain_text {
-        overflow-wrap: anywhere;
-    }
-    .missed_domain {
-        color: grey;
-        text-decoration-line: line-through;
-        border-bottom: 1px solid;
-        border-color: lightgray;
-    }
-    .domain_list {
-        font-size: 1.7rem;
-    }
-    .domain_li_div {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        border-bottom: 1px solid;
-        border-color: lightgray;
-    }
-    .point_li {
-        font-style: italic;
-        color: #6b6b6b;
-        margin-left: 3rem;
-        font-size: 1.2rem;
-        text-align: right;
-    }
-    .point_li::after {
-        content: " pt";
-    }
-    .warning {
-        color: rgb(175, 0, 0);
-        min-height: 1.5rem;
-        margin: 0;
-    }
-    .input{
-        padding: 0 1rem;
-        font-size: 1.5rem;
-        height: 4rem;
-        border-radius: 1rem 0 0 1rem;
-        border: blue solid;
-        border-width: 1px 0 1px 1px;
-        max-width: 90%;
-    }
-    .input_container{
-        display: flex;
-        justify-content: center;
-        max-width: 90%;
-    }
-    .submit_btn_img{
-        width: 2.3rem;
-    }
-    .submit_btn{
-        padding: 0 1rem;
-        font-size: 1.5rem;
-        height: 4rem;
-        border-radius: 0 1rem 1rem 0;
-        border: blue solid 1px;
-        background-color: lightblue;
-        border-width: 1px 1px 1px 0;
-    }
-    .submit_btn:disabled{
-        background-color: lightgrey;
-    }
-    .modalArea {
-        display: none;
-        position: fixed;
-        z-index: 10;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .modalBg {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(30,30,30,0.7);
-    }
-    .modalWrapper {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform:translate(-50%,-50%);
-        width: 70%;
-        border-radius: 1rem;
-        padding: 2rem;
-        background-color: #fff;
-        max-height: 90%;
-        overflow-y: scroll;
-    }
-    .modalContents {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .resultTitle {
-        font-size: 2rem;
-    }
-    .resultDomainListContainer{
-        width: 90%;
-        padding: 1rem;
-        border-radius: .5rem;
-    }
-    .resultPoint {
-        font-size: 3.5rem;
-    }
-    .shareBtn {
-        background-color: lightskyblue;
-        color: white;
-    }
-    .btn {
-        font-size: 1.3rem;
-        border-radius: 0.5rem;
-        padding: 0.8rem 1.5rem;
-        border: 1px solid black;
-        margin: 1rem 1rem 0;
-        cursor: pointer;
-    }
-    .footer{
-        width: 100%;
-        text-align: center;
-        background-color: gainsboro;
-        height: min();
-    }
-    .fotter-text{
-        padding: 0.5rem;
-        color: #444;
-    }
-    /* ツールチップ */
-      /* 親要素 */
-  .tooltip-container {
-    position: relative;
-    display: inline-block;
-    border: grey solid 1px;
-    border-radius: 50%;
-    background-color: lightblue;
-    margin: 0 0 0 0.5rem;
-    width: 1.2rem;
-    height: 1.2rem;
-    text-align: center;
-    color: #ffffff;
-    font-weight: bold;
-  }
+body {
+font-family: sans-serif;
+background-color: gainsboro;
+margin: 0;
+}
+h1 {
+text-align: center;
+margin: 0;
+padding: 2rem 0;
+}
+a {
+text-decoration: none;
+color: black;
+}
+.title_en {    
+font-size: 1rem;
+color: gray;
+font-family: serif;
+font-style: italic;
+}
+.main_container{
+background-color: #fcfcfc;
+padding: 0 10% 7rem 10%;
+}
+.heart {
+width: 4rem;
+}
+.wiggle {
+animation: wiggle .2s infinite;
+}
+@keyframes wiggle {
+0% {transform: translate(0px, 0px) rotateZ(0deg)}
+25% {transform: translate(2px, 2px) rotateZ(1deg)}
+50% {transform: translate(0px, 2px) rotateZ(0deg)}
+75% {transform: translate(2px, 0px) rotateZ(-1deg)}
+100% {transform: translate(0px, 0px) rotateZ(0deg)}
+}
+.player-container {
+display: flex;
+flex-direction: column;
+margin: 1rem 0;
+align-items: center;
+}
+.domain_text {
+overflow-wrap: anywhere;
+}
+.missed_domain {
+color: grey;
+text-decoration-line: line-through;
+border-bottom: 1px solid;
+border-color: lightgray;
+}
+.domain_list {
+font-size: 1.7rem;
+}
+.domain_li_div {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+border-bottom: 1px solid;
+border-color: lightgray;
+}
+.point_li {
+font-style: italic;
+color: #6b6b6b;
+margin-left: 3rem;
+font-size: 1.2rem;
+text-align: right;
+}
+.point_li::after {
+content: " pt";
+}
+.warning {
+color: rgb(175, 0, 0);
+min-height: 1.5rem;
+margin: 0;
+}
+.input{
+padding: 0 1rem;
+font-size: 1.5rem;
+height: 4rem;
+border-radius: 1rem 0 0 1rem;
+border: blue solid;
+border-width: 1px 0 1px 1px;
+max-width: 90%;
+}
+.input_container{
+display: flex;
+justify-content: center;
+max-width: 90%;
+}
+.submit_btn_img{
+width: 2.3rem;
+}
+.submit_btn{
+padding: 0 1rem;
+font-size: 1.5rem;
+height: 4rem;
+border-radius: 0 1rem 1rem 0;
+border: blue solid 1px;
+background-color: lightblue;
+border-width: 1px 1px 1px 0;
+}
+.submit_btn:disabled{
+background-color: lightgrey;
+}
+.modalArea {
+display: none;
+position: fixed;
+z-index: 10;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+.modalBg {
+width: 100%;
+height: 100%;
+background-color: rgba(30,30,30,0.7);
+}
+.modalWrapper {
+position: absolute;
+top: 50%;
+left: 50%;
+transform:translate(-50%,-50%);
+width: 70%;
+border-radius: 1rem;
+padding: 2rem;
+background-color: #fff;
+max-height: 90%;
+overflow-y: scroll;
+}
+.modalContents {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.resultTitle {
+font-size: 2rem;
+}
+.resultDomainListContainer{
+width: 90%;
+padding: 1rem;
+border-radius: .5rem;
+}
+.resultPoint {
+font-size: 3.5rem;
+}
+.shareBtn {
+background-color: lightskyblue;
+color: white;
+}
+.btn {
+font-size: 1.3rem;
+border-radius: 0.5rem;
+padding: 0.8rem 1.5rem;
+border: 1px solid black;
+margin: 1rem 1rem 0;
+cursor: pointer;
+}
+.footer{
+width: 100%;
+text-align: center;
+background-color: gainsboro;
+height: min();
+}
+.fotter-text{
+padding: 0.5rem;
+color: #444;
+}
+/* ツールチップ */
+/* 親要素 */
+.tooltip-container {
+position: relative;
+display: inline-block;
+border: grey solid 1px;
+border-radius: 50%;
+background-color: lightblue;
+margin: 0 0 0 0.5rem;
+width: 1.2rem;
+height: 1.2rem;
+text-align: center;
+color: #ffffff;
+font-weight: bold;
+}
 
-  /* モーダルのテキスト */
-  .tooltip-text {
-    visibility: hidden;
-    width: 20rem;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 8px;
-    position: absolute;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+/* モーダルのテキスト */
+.tooltip-text {
+visibility: hidden;
+width: 20rem;
+background-color: #333;
+color: #fff;
+text-align: center;
+border-radius: 5px;
+padding: 8px;
+position: absolute;
+bottom: 125%;
+left: 50%;
+transform: translateX(-50%);
+z-index: 1;
+opacity: 0;
+transition: opacity 0.3s;
+}
 
-  /* モーダルの矢印 */
-  .tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%; /* 下方向に矢印を表示 */
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-  }
+/* モーダルの矢印 */
+.tooltip-text::after {
+content: "";
+position: absolute;
+top: 100%; /* 下方向に矢印を表示 */
+left: 50%;
+transform: translateX(-50%);
+border-width: 5px;
+border-style: solid;
+border-color: #333 transparent transparent transparent;
+}
 
-  /* マウスオーバーやタップ時に表示 */
-  .tooltip-container:hover .tooltip-text,
-  .tooltip-container:focus-within .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-  }
+/* マウスオーバーやタップ時に表示 */
+.tooltip-container:hover .tooltip-text,
+.tooltip-container:focus-within .tooltip-text {
+visibility: visible;
+opacity: 1;
+}
 </style>
 <script>
 const heart_inter_html = '<img class="heart" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2665.svg">';
@@ -339,7 +345,7 @@ function checkValidDomain(){
             return;
         }
         if (i == domain_list.length - 1) {
-            if(list_domain_text.slice(-1) !== domain.slice(0, 1)){
+            if(list_domain_text.slice(-1) !== domain.slice(0, 1).toLowerCase()){
                 document.getElementById("submit_btn").disabled = true;
                 document.getElementById("warning_text").textContent = `しりとりになっていません（${list_domain_text.slice(-1)}から始めます）`;
                 return;
@@ -348,17 +354,6 @@ function checkValidDomain(){
     }
 
     if(domain.match(/^[a-zA-Z0-9.-]+$/)){
-        // 先頭や末尾にハイフンがあるか
-        if(domain[0] === "-"){
-            document.getElementById("submit_btn").disabled = true;
-            document.getElementById("warning_text").textContent = "先頭にハイフン(-)は使えません";
-            return;
-        }
-        if(domain.slice(-1) === "-"){
-            document.getElementById("submit_btn").disabled = true;
-            document.getElementById("warning_text").textContent = "末尾にハイフン(-)は使えません";
-            return;
-        }
         // 先頭にドットがないか
         if(domain[0] === "."){
             document.getElementById("submit_btn").disabled = true;
@@ -377,10 +372,28 @@ function checkValidDomain(){
             document.getElementById("warning_text").textContent = "途中にドット(.)がありません";
             return;
         }
+        // 先頭や末尾にハイフンがあるか
+        if(domain[0] === "-"){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "先頭にハイフン(-)は使えません";
+            return;
+        }
+        if(domain.slice(-1) === "-"){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "末尾にハイフン(-)は使えません";
+            return;
+        }
 
         document.getElementById("submit_btn").disabled = false;
         document.getElementById("warning_text").textContent = "";
     }else{
+        // 空白が含まれている場合
+        if(domain.match(/\s/)){
+            document.getElementById("submit_btn").disabled = true;
+            document.getElementById("warning_text").textContent = "空白は使えません";
+            return;
+        }
+
         document.getElementById("submit_btn").disabled = true;
         document.getElementById("warning_text").textContent = "ドメインの形式が違います(英数字とハイフン、ドットのみ)";
     }
@@ -436,7 +449,8 @@ function updateRemainingLives() {
         document.getElementById("resultDomainListContainer").innerHTML = document.getElementById("domain_list").outerHTML;
         const pt = getPointSum();
         document.getElementById("resultPoint").innerHTML = pt + " pt!";
-        document.getElementById("shareBtn").href = `https://twitter.com/intent/tweet?text=私のドメインしりとりのスコアは${pt}ptでした！&url=${location.href}`;
+        const domain_count = document.getElementById("domain_list").getElementsByTagName("li").length;
+        document.getElementById("shareBtn").href = `https://twitter.com/intent/tweet?text=ドメインしりとりで${domain_count}連続でしりとりして、スコアは${pt}ptでした！&url=${location.href}`;
         return;
     } else {
         if (brokenHearts === 1) {
@@ -503,7 +517,7 @@ function playAgain(){
 playAgain();
 window.addEventListener('beforeunload', function (e) {
     e.preventDefault();
-    e.returnValue = '変更内容が保存されていない場合、失われる可能性があります。';
+    e.returnValue = '遷移';
 });
 </script>
 </html>

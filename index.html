@@ -18,7 +18,7 @@
             <span class="open-close-icon" aria-hidden="true"></span>
             </summary>
             <div class="rule-container">
-            <div class="rule-inner">
+            <div>
                 <ul>
                     <li class="rule-text">
                         <p>ドメインでしりとりする</p>
@@ -60,7 +60,8 @@
         </div>
     </div>
     <footer class="footer">
-        <p class="fotter-text">Ver. 1.0.1 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text item-left">Using <a href="https://github.com/twitter/twemoji" target="_blank">Twemoji</a> by Twitter</p>
+        <p class="fotter-text item-center">Ver. 1.0.2 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
@@ -239,18 +240,44 @@ cursor: pointer;
 }
 .footer{
 width: 100%;
-text-align: center;
 background-color: gainsboro;
-height: min();
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: flex-start;
+gap: 10px;
+position: relative;
 }
 .fotter-text{
 padding: 0.5rem;
 color: #444;
 }
+.item-left {
+margin-left: 0;
+font-size: 0.8rem;
+}
+.item-center {
+text-align: center;
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+margin-top: 0rem;
+width: 100%;
+}
+@media (max-width: 800px) {
+.footer {
+flex-direction: column;
+justify-content: flex-start;
+}
+.item-center {
+margin-top: 2rem;
+}
+}
 /* ツールチップ */
 /* 親要素 */
 .tooltip-container {
 position: relative;
+overflow: hidden;
 display: inline-block;
 border: grey solid 1px;
 border-radius: 50%;
@@ -266,7 +293,7 @@ font-weight: bold;
 /* モーダルのテキスト */
 .tooltip-text {
 visibility: hidden;
-width: 20rem;
+width: 12rem;
 background-color: #333;
 color: #fff;
 text-align: center;
@@ -298,6 +325,10 @@ border-color: #333 transparent transparent transparent;
 .tooltip-container:focus-within .tooltip-text {
 visibility: visible;
 opacity: 1;
+}
+.tooltip-container:hover,
+.tooltip-container:focus-within {
+overflow: visible;
 }
 </style>
 <script>

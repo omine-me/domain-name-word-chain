@@ -16,12 +16,17 @@ padding: 0.6rem 1.5rem 0.5rem;
 color: #fff;
 cursor: pointer;
 background-color: #6a6a6a;
-border-radius: 1rem 1rem 0 0;
+border-radius: .8rem;
 font-size: 1.5rem;
 
 &::-webkit-details-marker {
     display: none;
 }
+}
+
+details[open] .rule-summary {
+/* color: gray; */
+border-radius: 1rem 1rem 0 0;
 }
 
 .open-close-icon {
@@ -57,10 +62,6 @@ transition: grid-template-rows 0.5s;
 border: 1px solid #6a6a6a;
 grid-template-rows: 1fr;
 border-radius: 0 0 1rem 1rem;
-}
-
-.rule-inner {
-overflow: hidden;
 }
 
 .rule-text{

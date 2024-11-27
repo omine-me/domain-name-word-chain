@@ -24,11 +24,6 @@ font-size: 1.5rem;
 }
 }
 
-details[open] .rule-summary {
-/* color: gray; */
-border-radius: 1rem 1rem 0 0;
-}
-
 .open-close-icon {
 position: relative;
 display: inline-block;
@@ -58,10 +53,14 @@ aspect-ratio: 1;
 
 .rule-container {
 display: grid;
-transition: grid-template-rows 0.5s;
+transition: grid-template-rows 0.2s;
 border: 1px solid #6a6a6a;
 grid-template-rows: 1fr;
 border-radius: 0 0 1rem 1rem;
+}
+
+details[open] .rule-summary {
+border-radius: 1rem 1rem 0 0;
 }
 
 .rule-text{

@@ -3,11 +3,23 @@
 <head>
     <title>ドメインしりとり</title>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ドメインネーム(www.〇〇〇.com)でしりとりをするゲームです。あなたのネットサーフィン力を試そう！" />
     <link rel="canonical" href="https://m-shiritori.omine.me" />
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg">
     <meta name="format-detection" content="telephone=no" />
-<link rel="stylesheet" href="./accordion.css">
+    <meta property="og:url" content="https://m-shiritori.omine.me" />
+    <meta property="og:title" content="ドメインしりとり" />
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="ドメインネーム(www.〇〇〇.com)でしりとりをするゲームです。あなたのネットサーフィン力を試そう！" />
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg" />
+    <meta name="twitter:card" content="summary" />
+    <!-- <meta name="twitter:site" content="@Twitterユーザー名" /> -->
+    <meta property="og:site_name" content="ドメインしりとり" />
+    <meta property="og:locale" content="ja_JP" />
+    <!-- <meta property="fb:app_id" content="appID" /> -->
+    <link rel="stylesheet" href="./accordion.css">
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGKKWT6ZWC"></script>
@@ -52,6 +64,9 @@
                     <li class="rule-text">
                         <p>ドメインの文字数などからポイントを算出</p>
                     </li>
+                    <li class="rule-text">
+                        <p>調べるの禁止！</p>
+                    </li>
                 </ul>
             </div>
             </div>
@@ -70,7 +85,7 @@
     </div>
     <footer class="footer">
         <p class="fotter-text item-left">Using <a href="https://github.com/twitter/twemoji" target="_blank">Twemoji</a> by Twitter</p>
-        <p class="fotter-text item-center">Ver. 1.0.4 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text item-center">Ver. 1.0.5 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
@@ -489,7 +504,7 @@ function updateRemainingLives() {
         const pt = getPointSum();
         document.getElementById("resultPoint").innerHTML = pt + " pt!";
         const domain_count = document.getElementById("domain_list").getElementsByTagName("li").length;
-        document.getElementById("shareBtn").href = `https://twitter.com/intent/tweet?text=ドメインしりとりで${domain_count}連続でしりとりして、スコアは${pt}ptでした！&url=${location.href}`;
+        document.getElementById("shareBtn").href = `https://twitter.com/intent/tweet?text=ドメインしりとり:%20${domain_count}つのドメインでしりとりして、スコアは${pt}ptでした！&url=${location.href}`;
         return;
     } else {
         if (brokenHearts === 1) {
@@ -554,9 +569,16 @@ function playAgain(){
     document.getElementById("input").focus();
 }
 playAgain();
-window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = '遷移';
-});
+
+document.getElementById('submit_btn').addEventListener(
+    'click',
+    function () {
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '遷移';
+        });
+    },
+    { once: true }
+);
 </script>
 </html>

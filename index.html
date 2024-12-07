@@ -32,8 +32,8 @@
 </script>
 <body>
     <div class="main_container">
-        <h1><a href="">ドメイン<wbr />しりとり</a><p class="title_en">Domain name word chain</p></h1>
-        <details id="accordion" class="accordion" open>
+        <h1><a href="" class="brw-support">ドメイン<wbr />しりとり</a><p class="title_en">Domain name word chain</p></h1>
+        <details id="accordion" class="accordion">
             <summary class="rule-summary">
             ルール
             <span class="open-close-icon" aria-hidden="true"></span>
@@ -85,13 +85,13 @@
     </div>
     <footer class="footer">
         <p class="fotter-text item-left">Using <a href="https://github.com/twitter/twemoji" target="_blank">Twemoji</a> by Twitter</p>
-        <p class="fotter-text item-center">Ver. 1.0.5 © 2024 <a href="https://omine.me">omine.me</a></p>
+        <p class="fotter-text item-center">Ver. 1.0.6 © 2024 <a href="https://omine.me">omine.me</a></p>
     </footer>
     <section id="resultModal" class="modalArea">
         <div id="modalBg" class="modalBg"></div>
         <div class="modalWrapper">
           <div class="modalContents">
-            <p class="resultTitle">ゲームオーバー</p>
+            <p class="resultTitle brw-support">ゲーム<wbr>オーバー</p>
             <p class="resultPoint" id="resultPoint"></p>
             <div class="resultDomainListContainer" id="resultDomainListContainer"></div>
             <a class="shareBtn btn" id="shareBtn" href="" target="_blank">Xで結果を共有</a>
@@ -231,8 +231,8 @@ width: 70%;
 border-radius: 1rem;
 padding: 2rem;
 background-color: #fff;
-max-height: 90%;
-overflow-y: scroll;
+max-height: 85%;
+overflow-y: auto;
 }
 .modalContents {
 display: flex;
@@ -241,6 +241,7 @@ align-items: center;
 }
 .resultTitle {
 font-size: 2rem;
+text-align: center;
 }
 .resultDomainListContainer{
 width: 90%;
@@ -249,6 +250,8 @@ border-radius: .5rem;
 }
 .resultPoint {
 font-size: 3.5rem;
+line-height: 3.5rem;
+text-align: center;
 }
 .shareBtn {
 background-color: lightskyblue;
@@ -287,6 +290,10 @@ left: 50%;
 transform: translateX(-50%);
 margin-top: 0rem;
 }
+.brw-support {
+word-break: keep-all;
+overflow-wrap: break-word;
+}
 @media (max-width: 800px) {
 .footer {
 flex-direction: column;
@@ -294,6 +301,16 @@ justify-content: flex-start;
 }
 .item-center {
 margin-top: 2rem;
+}
+.modalWrapper {
+width: 95%;
+padding: 2rem 0.1rem;
+}
+.resultDomainListContainer{
+width: auto;
+}
+.resultDomainListContainer .point_li{
+margin-left: .5rem;
 }
 }
 /* ツールチップ */

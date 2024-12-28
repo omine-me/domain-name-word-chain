@@ -223,7 +223,6 @@ function playAgain(){
 function getTranslatedText(key, args={}) {
     let text = translations[key][document.documentElement.lang];
     if (args) {
-        console.log(args);
         Object.keys(args).forEach(key => text = text.replace("$"+key+"$", args[key]));
     }
     return text;

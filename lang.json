@@ -1,0 +1,50 @@
+{
+    "heart": {
+        "en": "heart",
+        "ja": "ハート"
+    },
+    "broken_heart": {
+        "en": "broken heart",
+        "ja": "割れたハート"
+    },
+    "no_same_domain_error":{
+        "en": "Can't use the same domain",
+        "ja": "同じドメインは使えません"
+    },
+    "not_a_valid_start_character":{
+        "en": "Should start with $start_character$",
+        "ja": "しりとりになっていません（$start_character$から始めます）"
+    },
+    "cannot_start_with_dot":{
+        "en": "Can't start with a dot(.)",
+        "ja": "先頭にドット(.)は使えません"
+    },
+    "cannot_use_consecutive_dots":{
+        "en": "Can't use consecutive dots(.)",
+        "ja": "ドット(.)は連続では使えません"
+    },
+    "no_dot_in_the_middle":{
+        "en": "There is no dot(.) in the middle",
+        "ja": "途中にドット(.)がありません"
+    },
+    "cannot_start_with_hyphen":{
+        "en": "Can't start with a hyphen(-)",
+        "ja": "先頭にハイフン(-)は使えません"
+    },
+    "cannot_end_with_hyphen":{
+        "en": "Can't end with a hyphen(-)",
+        "ja": "末尾にハイフン(-)は使えません"
+    },
+    "cannot_use_space":{
+        "en": "Can't use a space",
+        "ja": "空白は使えません"
+    },
+    "invalid_format":{
+        "en": "Domain format is incorrect(only alphanumeric, hyphen, and dot)",
+        "ja": "ドメインの形式が違います(英数字とハイフン、ドットのみ)"
+    },
+    "share_url":{
+        "en": "https://twitter.com/intent/tweet?text=🌐Domain Name Word Chain:%20I played a word chain game in $domain_count$ domains, and my score was $point$ points!&url=$url_of_this_site$",
+        "ja": "https://twitter.com/intent/tweet?text=🌐ドメインしりとり:%20$domain_count$つのドメインでしりとりして、スコアは$point$ptでした！&url=$url_of_this_site$"
+    }
+}

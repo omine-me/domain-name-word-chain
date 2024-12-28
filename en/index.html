@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <title>ドメインしりとり</title>
+    <title>Domain Name Word Chain</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ドメインネーム(www.〇〇〇.com)でしりとりをするゲームです。あなたのネットサーフィン力を試そう！">
+    <meta name="description" content="This is a game where you play word chains with domain names. Test your surfing skills!">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGKKWT6ZWC"></script>
     <script>
@@ -19,62 +19,62 @@
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg">
     <meta name="format-detection" content="telephone=no">
     <meta property="og:url" content="https://m-shiritori.omine.me">
-    <meta property="og:title" content="ドメインしりとり">
+    <meta property="og:title" content="Domain Name Word Chain">
     <meta property="og:type" content="website">
-    <meta property="og:description" content="ドメインネーム(www.〇〇〇.com)でしりとりをするゲームです。あなたのネットサーフィン力を試そう！">
+    <meta property="og:description" content="This is a game where you play word chains with domain names. Test your surfing skills!">
     <meta property="og:image" content="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f494.svg">
     <meta name="twitter:card" content="summary">
     <!-- <meta name="twitter:site" content="@Twitterユーザー名"> -->
-    <meta property="og:site_name" content="ドメインしりとり">
+    <meta property="og:site_name" content="Domain Name Word Chain">
     <meta property="og:locale" content="ja_JP">
     <!-- <meta property="fb:app_id" content="appID"> -->
-    <link rel="stylesheet" href="./accordion.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./../accordion.css">
+    <link rel="stylesheet" href="./../style.css">
 </head>
 <body>
     <header>
         <nav>
             <select id="locale-switcher" class="locale-switcher" onchange="changeLocale()">
-                <option value="ja" selected>日本語 / Japanese</option>
-                <option value="en">English / 英語</option>
+                <option value="ja">日本語 / Japanese</option>
+                <option value="en" selected>English / 英語</option>
             </select>
         </nav>
     </header>
     <div class="main_container">
-        <h1><a href="" class="brw-support">ドメイン<wbr>しりとり</a><p class="title_en">Domain name word chain</p></h1>
+        <h1><a href="" class="brw-support">Domain Name Word Chain</a><p class="title_en">Domain name word chain</p></h1>
         <details id="accordion" class="accordion">
             <summary class="rule-summary">
-            ルール
+            Rules
             <span class="open-close-icon" aria-hidden="true"></span>
             </summary>
             <div class="rule-container">
             <div>
                 <ul>
                     <li class="rule-text">
-                        <p>ドメインでしりとりする</p>
-                        <p>ドメインの例：www.google.com, yahoo.co.jp, wikipedia.org</p>
+                        <p>Play word chains with domain names.</p>
+                        <p>Examples: www.google.com, youtube.com, wikipedia.org</p>
                     </li>
                     <li class="rule-text">
-                        <p>英字(a-z)・数字(0-9)・ハイフン(-)・ドット(.)が使用可能</p>
+                        <p>English letters (a-z), numbers (0-9), hyphens (-) and dots (.) can be used.</p>
                     </li>
                     <li class="rule-text">
-                        <span>ドメインが存在していなければアウト</span><span class="tooltip-container" tabindex="0">?<div class="tooltip-text">Public DNSで確認してDNS response codeが0のドメインを存在するものとする</div></span>
+                        <span>If the domain doesn’t exist, you lose a life.</span><span class="tooltip-container" tabindex="0">?<div class="tooltip-text">Check Public DNS and assume that a domain with a DNS response code of 0 exists.</div></span>
                     </li>
                     <li class="rule-text">
-                        <p>同じドメインは使えない</p>
-                        <p>（※www.google.comとgoogle.comは異なるのでOK）</p>
+                        <p>Cannot use the same domain.</p>
+                        <p>*Note: www.google.com and google.com are considered different.</p>
                     </li>
                     <li class="rule-text">
-                        <p>３回アウトで終了</p>
+                        <p>The game ends after losing three lives.</p>
                     </li>
                     <li class="rule-text">
-                        <p>世界一有名なドメインwww.google.comからスタート</p>
+                        <p>The game starts with www.google.com, the world’s most famous domain.</p>
                     </li>
                     <li class="rule-text">
-                        <p>ドメインの文字数などからポイントを算出</p>
+                        <p>Points are based on the domain's length and other factors.</p>
                     </li>
                     <li class="rule-text">
-                        <p>調べるの禁止！</p>
+                        <p>No searching allowed!</p>
                     </li>
                 </ul>
             </div>
@@ -87,7 +87,7 @@
             <div class="input_container">
             <input id="input" class="input" onInput="checkValidDomain()">
             <button id="submit_btn" class="submit_btn" onclick="submit()" disabled>
-                <img class="submit_btn_img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f50e.svg" alt="送信">
+                <img class="submit_btn_img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f50e.svg" alt="Submit">
             </button>
             </div>
         </div>
@@ -100,15 +100,15 @@
         <div id="modalBg" class="modalBg"></div>
         <div class="modalWrapper">
           <div class="modalContents">
-            <p class="resultTitle brw-support">ゲーム<wbr>オーバー</p>
+            <p class="resultTitle brw-support">Game Over</p>
             <p class="resultPoint" id="resultPoint"></p>
             <div class="resultDomainListContainer" id="resultDomainListContainer"></div>
-            <a class="shareBtn btn" id="shareBtn" href="" target="_blank">Xで結果を共有</a>
-            <button class="btn" onclick="playAgain()">もう一度</button>
+            <a class="shareBtn btn" id="shareBtn" href="" target="_blank">Share on X</a>
+            <button class="btn" onclick="playAgain()">Play Again</button>
           </div>
         </div>
     </div>
-<script src="./accordion.js"></script>
-<script src="./script.js"></script>
+<script src="./../accordion.js"></script>
+<script src="./../script.js"></script>
 </body>
 </html>
